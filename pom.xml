@@ -66,7 +66,7 @@
         <env>local</env>
         <user.username></user.username>
         <user.password></user.password>
-        <grid2.hub>http://192.168.1.43</grid2.hub>
+        <grid2.hub></grid2.hub>
         <site.url>http://192.168.1.43</site.url>
         <browser.name>firefox</browser.name>
         <browser.version></browser.version>
