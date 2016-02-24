@@ -1,28 +1,59 @@
 package ru.st.selenium.pages;
 
-import org.openqa.selenium.WebDriver;
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.Select;
 
-/**
- * Sample page
- */
-public class HomePage extends Page {
+public class HomePage extends InternalPage {
 
-	private final String H1_TAG = "h1";
-	
-	@FindBy(how = How.TAG_NAME, using = H1_TAG)
-	@CacheLookup
-	private WebElement h1Element;
-	
-	public HomePage(WebDriver webDriver) {
-		super(webDriver);
-	}
-	
-	public String getH1() {
-		return h1Element.getText();
+	public HomePage(PageManager pages) {
+		super(pages);
 	}
 
+	@FindBy(className = "movie_box")
+	private List<WebElement> allMovie;
+
+	@FindBy(css = "nav a[href $= '?go=add']")
+	private WebElement addFilmButton;
+
+	@FindBy(css = "nav a[href $= '?go=imdbupdate']")
+	private WebElement imdbUpdateButton;
+
+	@FindBy(css = "nav a[href $= '?go=export']")
+	private WebElement exportButton;
+
+	@FindBy(className = "searchbox")
+	private WebElement searchBoxField;
+
+	public AddFilmPage clickAddFilmButton() {
+		addFilmButton.click();
+		return pages.addFilmPage;
+	}
+	
+	public AboutFilmPage clickAboutFilm(int rndMovie) {
+		WebElement aboutMovie = allMovie.get(rndMovie);
+		aboutMovie.click();
+		System.out.println("тыркнул в фильм");
+		pages.aboutFilmPage.waitPageLoaded();
+		return pages.aboutFilmPage.ensurePageLoaded();
+		
+	}
+	
+	public int countAllMovie(){
+		if (this.allMovie.size()>0) return this.allMovie.size();
+		else return 0;
+	}
+
+	public HomePage ensurePageLoaded() {
+		super.ensurePageLoaded();
+		wait.until(presenceOfElementLocated(By.id("search")));
+		return this;
+	}
+
+	
 }
